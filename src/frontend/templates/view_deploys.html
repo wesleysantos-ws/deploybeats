@@ -1,0 +1,26 @@
+{% include 'header.html' %}
+
+<body>
+    {% include 'nav.html' %}
+    <h1>Deploy Report</h1>
+    <table class="table table-striped">
+        <tr>
+            {% for key in response[0] %}
+            <th>{{ key | replace('_','') }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for i in response %}
+        <tr>
+            {% for key in i %}
+            {% if key == '_id' %}
+            <td>{{ i[key]['$oid'] }}</td>
+            {% else %}
+            <td>{{ i[key] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</body>

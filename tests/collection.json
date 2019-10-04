@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "373a06c7-e22d-483b-9ab8-c22f4c0dcb13",
+		"name": "Deploy Report",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Criar Deploy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be08bf0d-ecf6-42af-8260-bd71a87de212",
+						"exec": [
+							"pm.test(\"Status Code: 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// tests[\"id = \" + jsonData.id] = true; // debug message    ",
+							"var jsonData = JSON.parse(responseBody);",
+							"var id = jsonData.id;",
+							"pm.environment.set(\"id\", id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"componente\": \"orders\",\n        \"versao\": \"1.2.3\",\n        \"responsavel\": \"biro-biro\",\n        \"status\": \"pendente\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/api/deploys",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"deploys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Listar Deploy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b2e0bc53-341e-4479-a790-df01230bb130",
+						"exec": [
+							"pm.test(\"Status Code: 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/deploys/{{id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"deploys",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Atualizar Status do Deploy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0476a15a-3a42-495c-a621-f0261e90c442",
+						"exec": [
+							"pm.test(\"Status Code: 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"status\": \"concluido\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/api/deploys/{{id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"deploys",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Listar TODOS Deploys",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "631ffae6-0a17-4a00-8ea2-73b184f9721f",
+						"exec": [
+							"pm.test(\"Status Code: 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Encoding",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/api/deploys",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"deploys"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ce0ef906-b06d-49e1-9c07-6bc29ecf2678",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a13bfbc6-c5d2-4a14-a6a2-2eb002fad18a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "308e7477-31a2-4e70-9b16-64fb51b9a1e1",
+			"key": "URL",
+			"value": "http://localhost:8001",
+			"type": "string"
+		},
+		{
+			"id": "da737035-f5d7-4624-8495-b9d4d9e7d622",
+			"key": "id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

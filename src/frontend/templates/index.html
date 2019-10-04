@@ -1,0 +1,80 @@
+{% include 'header.html' %}
+
+<body bgcolor="#afafaf">
+  {% include 'nav.html' %}
+  <h1>Deploy Beats</h1>
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#get" role="button" aria-expanded="false"
+      aria-controls="collapseExample">
+      GET /api/deploys
+    </a>
+    <a class="btn btn-primary" data-toggle="collapse" href="#create" role="button" aria-expanded="false"
+      aria-controls="collapseExample">
+      POST /api/deploys
+    </a>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#update" aria-expanded="false"
+      aria-controls="collapseExample2">
+      PUT /api/deploys/{id}
+    </button>
+  </p>
+  <div class="collapse" id="get">
+    <div class="card card-body">
+      curl http://localhost:8001/api/deploys
+    </div>
+  </div>
+  <div class="collapse" id="create">
+    <div class="card card-body">
+      curl -X POST \
+      <br>http://localhost:8001/api/deploys \
+      <br>-H 'Content-Type: application/json' \
+      <br>-d '{"componente": "orders",
+      <br>"versao": "1.2.3",
+      <br>"responsavel": "biro-biro",
+      <br>"status": "pendente"}'
+    </div>
+  </div>
+  <div class="collapse" id="update">
+    <div class="card card-body">
+      curl -X PUT \
+      <br>http://localhost:8001/api/deploys/{id} \
+      <br>-H 'Content-Type: application/json' \
+      <br>-d '{"status": "concluido"}'
+      </p>
+
+    </div>
+  </div>
+  <form method='POST' action='/'>
+    <div class="form-group">
+      <label>Componente:</label>
+      <input type="text" class="form-control" name="componente" placeholder="orders-api" required>
+    </div>
+    <div class="form-group">
+      <label>Versao:</label>
+      <input type="text" class="form-control" name="versao" placeholder="1.0.0" required>
+    </div>
+    <div class="form-group">
+      <label>Responsavel:</label>
+      <input type="text" class="form-control" name="responsavel" placeholder="Biro-Biro" required>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Status:</label>
+      <select class="form-control" name="status" required>
+        <option>Iniciado</option>
+        <option>Pendente</option>
+        <option>Agendado</option>
+        <option>Implantado</option>
+        <option>Desfeito</option>
+        <option>Cancelado</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+  </form>
+  {% if status_code == 200 %}
+  <span class="badge badge-success">Status Code: {{status_code}}, Response: {{ response }}</span>
+  {% else %}
+  {% if status_code %}
+  <span class="badge badge-danger">Status Code: {{status_code}}, Response: {{ response }}</span>
+  {% endif %}
+  {% endif %}
+  </div>
+</body>

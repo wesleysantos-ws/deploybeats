@@ -1,0 +1,47 @@
+version: '2.1'
+
+services:
+  # Frontend
+  frontend:
+    image: deploybeats/frontend
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        tier: frontend
+        port: 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8001
+    links:
+      - backend
+
+  # Backend
+  backend:
+    image: deploybeats/backend
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        tier: backend
+        port: 8001
+    environment:
+      - DB_HOST=database
+      - DB_PORT=27017
+    ports:
+      - "8001:8001"
+    links:
+      - database
+
+  # Database
+  database:
+    image: mongo:4.2
+    container_name: database
+    volumes:
+      - ./db_data:/data
+    ports:
+      - "27017:27017"

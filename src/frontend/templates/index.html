@@ -69,7 +69,7 @@
     </div>
     <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   </form>
-  {% if status_code == 200 %}
+  {% if status_code == 201 %}
   <span class="badge badge-success">Status Code: {{status_code}}, Response: {{ response }}</span>
   {% else %}
   {% if status_code %}

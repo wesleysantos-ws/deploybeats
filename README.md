@@ -62,7 +62,7 @@ WEB: http://localhost:8000
 API: http://localhost:8001
 
 ```
-newman run tests/collection.json
+docker-compose run tests
 ```
 
 

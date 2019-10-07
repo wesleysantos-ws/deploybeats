@@ -80,7 +80,7 @@ def list_deploys():
     try:
         url = "http://{}:{}/api/deploys".format(backend_host, backend_port)
         r = requests.get(url)
-        if r.status_code == 200:
+        if r.status_code == 201:
             status_code, response = r.status_code, r.json()
         else:
             status_code, response = r.status_code, None

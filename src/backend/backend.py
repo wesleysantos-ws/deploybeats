@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 import datetime
-import json
 import os
 import pymongo
 from bson import ObjectId
 from flask import make_response
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api, reqparse
+from flask import Flask, jsonify
+from flask_restful import reqparse
 from pymongo import MongoClient
 from bson.json_util import dumps
 
 app = Flask(__name__)
+app_port = os.getenv("PORT", 8001)
 
 # Mongo DB Connection
 db_host = os.getenv("DB_HOST", "localhost")
@@ -72,9 +72,9 @@ def put(id):
     try:
         args = parser.parse_args()
         date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        res = collection.update_one({"_id": ObjectId(id)},
-                                    {"$set": {'status': args['status'],
-                                              'atualizado': f"{date}"}})
+        collection.update_one({"_id": ObjectId(id)},
+                              {"$set": {'status': args['status'],
+                                        'atualizado': f"{date}"}})
         app.logger.info("ID: {}".format(id))
         return jsonify({"status_code": "200", "id": "{}".format(id)})
     except Exception as e:
@@ -87,4 +87,4 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=8001)
+    app.run(debug=True, host="0.0.0.0", port=app_port)

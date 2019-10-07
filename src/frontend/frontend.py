@@ -1,10 +1,9 @@
 import os
 import requests
-import json
 from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
-
+app_port = os.getenv("PORT", 8000)
 backend_host = os.getenv("BACKEND_HOST", "localhost")
 backend_port = os.getenv("BACKEND_PORT", 8001)
 
@@ -21,7 +20,9 @@ def index():
         try:
             status_code, response = create_deploy(
                 componente, responsavel, status, versao)
-            return render_template(template, status_code=status_code, response=response)
+            return render_template(template,
+                                   status_code=status_code,
+                                   response=response)
         except Exception as e:
             app.logger.error(e)
 
@@ -33,21 +34,23 @@ def view_deploys():
     template = "view_deploys.html"
     try:
         status_code, response = list_deploys()
-        return render_template(template, status_code=status_code, response=response)
+        return render_template(template,
+                               status_code=status_code,
+                               response=response)
     except Exception as e:
         app.logger.error(e)
 
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({"frontend_status": "ok", "backend_status": "{}".format(backend_status())})
+    return jsonify({"frontend_status": "ok",
+                    "backend_status": "{}".format(backend_status())})
 
 
 def backend_status():
     try:
         url = "http://{}:{}/health".format(backend_host, backend_port)
         app.logger.info(url)
-        r = requests.get(url)
         return "ok"
     except Exception as e:
         app.logger.error(e)
@@ -59,11 +62,13 @@ def create_deploy(componente, responsavel, status, versao):
     try:
         url = "http://{}:{}/api/deploys".format(backend_host, backend_port)
         json = {"componente": f"{componente}",
-                "responsavel": f"{responsavel}", "status": f"{status}", "versao": f"{versao}"}
+                "responsavel": f"{responsavel}",
+                "status": f"{status}",
+                "versao": f"{versao}"}
         app.logger.info("Url {}, Payload {}".format(url, json))
 
         r = requests.post(url, json=json)
-        if r.status_code == 200:
+        if r.status_code == 201:
             status_code, response = r.status_code, r.json()
         else:
             status_code, response = r.status_code, None
@@ -90,4 +95,4 @@ def list_deploys():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8000)
+    app.run(debug=True, host="0.0.0.0", port=app_port)

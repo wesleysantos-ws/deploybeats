@@ -1,10 +1,10 @@
 FROM python:alpine
-ARG tier
-ARG port
-ENV tier=${tier}
-LABEL project="deploy" tier="${tier}"
+ARG TIER
+ARG PORT
+ENV TIER=${TIER}
+LABEL project="deploy" TIER="${TIER}"
 WORKDIR /app
-ADD src/${tier}/ /app
+ADD src/${TIER}/ /app
 RUN python3 -m pip install -r requirements.txt
-CMD /bin/sh -c "exec python3 ${tier}.py"
-EXPOSE ${port}
+CMD /bin/sh -c "exec python3 ${TIER}.py"
+EXPOSE ${PORT}

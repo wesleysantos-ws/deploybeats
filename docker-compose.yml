@@ -3,14 +3,14 @@ version: '2.1'
 services:
   # Frontend
   frontend:
-    image: deploybeats/frontend
+    image: frontend
     container_name: frontend
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        tier: frontend
-        port: 8000
+        TIER: frontend
+        PORT: 8000
     ports:
       - "8000:8000"
     environment:
@@ -21,14 +21,14 @@ services:
 
   # Backend
   backend:
-    image: deploybeats/backend
+    image: backend
     container_name: backend
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        tier: backend
-        port: 8001
+        TIER: backend
+        PORT: 8001
     environment:
       - DB_HOST=database
       - DB_PORT=27017
@@ -45,3 +45,13 @@ services:
       - ./db_data:/data
     ports:
       - "27017:27017"
+
+  # Tests
+  tests:
+    image: postman/newman_alpine33
+    container_name: tests-newman
+    command: run --timeout 15000 --env-var URL=backend:8001 /tests/collection.json --bail
+    volumes:
+      - ./tests:/tests
+    links:
+      - backend

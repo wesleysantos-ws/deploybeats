@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.com/weesntos/deploybeats.svg?branch=master)](https://travis-ci.com/weesntos/deploybeats)
 # Deploy Beats
-
+[![Build Status](https://travis-ci.com/weesntos/deploybeats.svg?branch=master)](https://travis-ci.com/weesntos/deploybeats)
 
 # Como usar
 

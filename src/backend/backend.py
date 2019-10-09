@@ -13,11 +13,10 @@ app = Flask(__name__)
 app_port = os.getenv("PORT", 8001)
 
 # Mongo DB Connection
-db_host = os.getenv("DB_HOST", "localhost")
-db_port = int(os.getenv("DB_PORT", 27017))
-client = MongoClient(db_host, db_port)
-db = client['mydb']
-collection = db['deploys']
+db_uri = os.getenv("DB_URI", "mongodb://localhost")
+client = MongoClient(db_uri)
+db = client.mydb
+collection = db.deploys
 
 # Parser
 parser = reqparse.RequestParser()

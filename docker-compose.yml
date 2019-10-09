@@ -30,8 +30,7 @@ services:
         TIER: backend
         PORT: 8001
     environment:
-      - DB_HOST=database
-      - DB_PORT=27017
+      - DB_URI=mongodb://database
     ports:
       - "8001:8001"
     links:

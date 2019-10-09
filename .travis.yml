@@ -3,6 +3,7 @@ services:
   - docker
 env:
   global:
+    - VERSION=$(egrep -o -m1 ^##.*\[[0-9]\] CHANGELOG.md | awk '{print $2}' | tr -d "[]" | tr -d "[:space:]")
     - DOCKER_COMPOSE_VERSION=1.24.0
     # travis encrypt HEROKU_API_KEY=$(heroku auth:token) --pro
     - secure: "q4VMmtCW8W2MTasuSTomS/105j7nUnZOIqDKwSlfpmbAyV4u8UI2dTFfahT9o2acDfXRKI1iWrZHcIQ9y55pAsJ9Rwe3iA/YL5TOnMWCpn32LZD+0J1aFne7lfpGDSncSpZkMQpaCuwSXZO/vHim4gOMOdjNc4a6ykVcnfzJePP8dJRwdDDmWJLEP7BzsgeN2mFUWnmwHhK7ZkGECe8nNI2uLB2VWcK1XQcUomDr3tI51YZEk4jWoQ7zxLXh+Fy8MVNHQPa9dvdYyFbKTweDuRlQEIcoJuvucShmip4qrsqXU2QsJVGhmgyo/7GA/OUEW6wn4zKjQmwfpFm9vR6sS3EHgRGxOzwCnkF71jZ6K8Lc7iRKIU+V5OYv0VMZc8ue5HpR+VeOeFNeqW/mJpWMkcEuBL4pQ4Ot9d7wTSSzvzoU0Zhnfi2rCtQUhYV05cv8hXXDptFqh2IS0GBs3Qg7Lv0jBa6tehHflLZTnsw+kssMDrUpCKAJL50htmC+R+oUqkwJaTDOaIaWQzei/yiKFCWPESueXr+2o6g/iuLGitIFpiYLCVY8hs9B0jFGLOnMN7WYoxSSK7rsyUXliA/gksaajbKxqFSF5hCVku5KoRMdd0IZ/4Nlw6ycbID6nI+jC9XWwrX/39/WzjctGQiBBfXaTMK/Dkq77XLKvrK+fXM="
@@ -42,6 +43,7 @@ jobs:
         - heroku apps | grep ^${HEROKU_API_NAME}$ || heroku apps:create ${HEROKU_API_NAME}
         - docker tag frontend registry.heroku.com/${HEROKU_WEB_NAME}/web && docker push registry.heroku.com/${HEROKU_WEB_NAME}/web
         - docker tag backend registry.heroku.com/${HEROKU_API_NAME}/web && docker push registry.heroku.com/${HEROKU_API_NAME}/web
+        - git tag ${VERSION}
       deploy:
         - provider: releases
           # GitHub Release travis encrypt --pro 'api-key'

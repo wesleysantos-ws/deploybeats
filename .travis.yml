@@ -32,6 +32,9 @@ jobs:
         # travis encrypt $(heroku auth:token) --pro
         DOCKER_PASSWORD:
           secure: "VMebDT6tzuuLk8/Wv9UpR4MUk1UnPttc8GA5DAFiHdQqiKTa+9oOf+Bh2/ePRohLWCRUYZX2lDQQNFMbWWwBeoxEGXSjcRokZHUyxrVOFma+26TUpSG1YATG5gYlH8dr7Ur0njL729vJ22ip/jTSDct6OptDgO7hDG4j4ZAR5Pk98XLyCNJN0B8n6rEa7nZEGdUOTMB79XuaWaJKMG2egP4oNPs//oK0hOHgF4+7UhYRYHiLGL3lr1lFT6hJTZ7b+Q37djEA2EJxD1yLnIOhWIyabzt3vGLwx942vOEYyRmk5qrvoF5JjI1BNoJxrLR6w0/ILiMJEuBCEDLJu/jZhOZglDYPpSwJAJUA49n5dODNwT1HXLRPvsNnFZc/RbknvbToaeMUT03/Wx0Pnj2PW0RIDC74sKf+SCa5JHhxlK7LJouywhZcl0FEZZpLJBlGGnKkdYgsbOFddrWK/giWKvUc2kuv+RXO55FfYC9GjYMlYgq4lMiXuZyF9b1xNBzaMLMnlVwdXgqhJXa8kZwB3tPdzXi0JNHTqUTUDQiv4Y3SoiCi+n3r660Oz14BdlXdVbXOCKIDSGlCcCCV2JIsbuOYMPhlqSLFXp2JZgLSmvjP868ybGqXyFv3Inmi0SCPOvIT4qII5OfHdBPmur7ftZJmspvzyyUufHDsyh9pEiY="
+        # travis encrypt 'mongodb://mongodb0.example.com:27017/admin' --pro
+        DATABASE_URI:
+          secure: "rSF3I1iAE4Duzlc1xIqHZh9UGHqEQudKr5vQ4hplrDsxExfjU46grPu125kZ2sijqIYGsIczK6IxzztD1xRH6FILulv3pxqhYx8PPftg2y0xBNzRR/qCswDTBxxBDA+uwHMCXqqqIPFT7DQnTE6HIGiq+NIey1sQ8NjRHnB5erEnlILKh+aBENDHb3Dxv4HuM2URAKtUUbfqkHa9j9h7u5mFyuIftE5kvCCtC/GA7vRwE0ZkfDqszVCx5BNIYQgukk9AmbqZhDir9sytHKVojWWhScy1EOwyDvl8hx8JD3Ws5BVHJ8zQMi/R0wdyclSId9GispmNclGMoibe3ROHorTg7DiCfLvt6D7bjud/nXdQTp/CeugRlI7djbrKFXxfl825WfiVsgzbtziMcYuj/lxNQvwGdFCYuCW066bDMO2XPq4tI6ww+VUn88yLuPQY46C7Xm321Sl/VEdNOqGikdD8GFo0EP40CqbDjODOdndGU9EavKg/v5ELkCJ76h3QQjoDddu5+H9hkaVl5nlLbDxDxe30yVpsP1QjH5Bcp0VPhvo29CAhnQPGr7BvDQ8wnZh6VJE7Nmsv3f52uCdqXF0DYXuozjrgYHodyTv+20tlvgu0yNEXtJR6B7TSbhOxq5pFoGC9SSlvuc1n7j1r3ID/UJb2JYutnm+7yAhJGAI="
       script:
         - docker-compose build && docker images
         - echo "$DOCKER_PASSWORD" | docker login --username=_ --password-stdin registry.heroku.com

@@ -49,7 +49,7 @@ jobs:
             secure: "iPKX91Q5lA4WJyaaygQrmVdo6BNwcce6aLvRCCt6JDhND/9p074H+UGTlvDbcjiaEGZaZNy9a6/W+6DJzDGbiHA2N3K5hZTMS/QNFO4p2u1vEIK/MTPOSXWOJl3x5icq1BN0UGBd8FkKcwSYmINyQzDa0L9c9V1feu1S6rurB5khzLYnb9JnGzVI+gXhGL2URXmORreGgge6fFjvgdyq+IOnK6PhZAVdt8WyS7McGfhsnPqnvuanj5mAZgdEya+BdJc1TCnLuROLXF/CYRYdt0mSLvRNRywBJ3H6oe/uQtvJo9aSLjFeSMRQpxtNa1APlXkgx3qIoyIlvFNAyoZ8Nvk5xwRBl5voP9X6FjqXJZ4IW6PARGooyIuJfAs5XhebAet13X45e6GFTGd7j9GoDHeLjpr0YOb9i5eu9n1yeMv8uyZY9I96mMRhZAEFGbvcySO5+HtQHL3JouqhvXqsQEMcRdmhPLIe1WPZ7yzO9NIvxXBw+jf635dSelYL5elVFzNlqS0NsTelPfpwRrDcz04fFdyL1OCZeMHbSIG2cbiGd+vvqoPgGcImOzg2M5iP6D8/gSxr1uyGeADgB8uq+nH5JeS13LyaYnBtIbEFrqUel3UXxHjnCUkOkfwXwxupgB+J07k6kyXgy9Y6YVvNN18Ogf/dUWBTM0KJuJADMcY="
           skip_cleanup: true
           on:
-            # tags: true
+            tags: true
             branch: master
         - provider: script
           script: heroku config:set BACKEND_HOST=${BACKEND_HOST} BACKEND_PORT=${BACKEND_PORT} -a ${HEROKU_WEB_NAME} && heroku container:release web -a ${HEROKU_WEB_NAME} && heroku ps:scale web=1 -a ${HEROKU_WEB_NAME}

@@ -1,0 +1,52 @@
+language: python
+services:
+  - docker
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.24.0
+    # travis encrypt HEROKU_API_KEY=$(heroku auth:token) --pro
+    - secure: "eZlS/Y3ZZd7HEHl5SjO5pZ/MkLURorbtWYRU+jRkoCS6uRDYxa1/GkQWUrQXEk3OvuWjfopJoDBMWdLTMZqHTCTcBknUcb9avw+U7AR6crYLTg6h/U8giUhKncveZnHt45+lU/WNwV7+yCixNQd06NIPmHkvY08krxOsBqz5bYGM4zQ7AEEOjvlTyVXLV8Lt+TjYhILJ0o/QJCh43x1iZu2zante4YOUTvrTgl1AGNV4islwKxd2U1lV4MxbTSe3LiuDYAth9LswmvVJpVZ17/bT2gFJSHT8BhAkX3hRqo2P0k3rMnDU/nEPHqigzcOdLQ07lWV9UlGi/g1ao6vrosslOAK98pzaaqPNQxWHx/yEFuiEIV2C1breckEpPo0ArIYVmUCgnWOHOBrzPgI9noGzSXFwoWCpB4HLgf9sj+JiBvgZD023dhsxPCoGaVBRglXe6/NFe0cPmgWlI028Zbs0MlZZO1V+q2m23TLgSROLbG6lUxnqH+VmOhyfo9MJQEkaj8uikfXcQ1b904PNt52HLOsbDQDdjUu20WVBw+HtpuaV6s9bMEPEf2K9xVLP4P40gFntwSOngV2OdS7GNDDwK9VVLGC+ujiGKVgyAUKbzvTsQFCtaoch5RVZrgcIIqgSWpVASOvL4UOH9hW6Hjuz9A3GfKPH/zB74MH7FPg="
+    - HEROKU_WEB_NAME=deploybeats
+    - HEROKU_API_NAME=deploybeats-api
+    - BACKEND_HOST=${HEROKU_API_NAME}.herokuapp.com
+    - BACKEND_PORT=80
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+jobs:
+  include:
+    - stage: Build
+      script:
+        - docker-compose build
+        - docker images
+    - stage: Tests
+      script:
+        - docker-compose up -d
+        - docker-compose ps
+        - docker-compose run tests
+    - stage: Deploy
+      env:
+        DOCKER_PASSWORD:
+          secure: "XsWm0uy/Q6Tpig9UkKvpGV49iSiuPACW1uE2EOBTY2AOae4k7gdEVQByQzpV+iuRqhjmhv1VIhRQ8ZTw74xK8rVjIuc/uIy/XRbVlbkGvaOF5qkpM/oK10mYm4P2JlUnyHPrBigKE4eaGj6M5ElVIH8obf+O+jTTGRlRAvw+GCihb7cken9MevIxOmfDo+pw4IQPRptbtN6c8Dag59Q2CFnCFdmQ7z0KDN5RLuv5GCe1tkJiKgrUAl8sel09tqiAE9PQ6S0LaSPHDzGSrBcLb/pFoDkdITxRtOgwmVtMsptC2RB7G3tCvNmLt2snWNFDKXeU/d3gawgm8jXkFEP77Q+r++PxAGlCQC03svT5ZnfoCoJy5Av6WE74seGO8GRGNzEFt3V8HutcFZCOhbTTdIsoOJE2QksdLS3Jt+QjpsOIrGDrniOOGTJidgZtlE6m+t68LQYDlfmJklDLRDFVrUIJoVVGEsI0OqrwF6Cff8YSTW6YdWr9kW77eOQQiWv6WCRnX09JLLQW9zP3+AAXQngdZ2YYVknQr8svn0XyxX0NwBCfh/97RtYfb9QyRJC8bA+uopJoh40HPONm0lhHz1sO1wNwczg0HAALw3/xD1t4XtmOthTz8Z2LC06/mkIjiFwFeJo7dE+fd1qpJH0bsmWyPs1lNuBNX5UFvk4O85k="
+      script:
+        - docker-compose build && docker images
+        - echo "$DOCKER_PASSWORD" | docker login --username=_ --password-stdin registry.heroku.com
+        - heroku apps | grep ^${HEROKU_WEB_NAME}$ || heroku apps:create ${HEROKU_WEB_NAME}
+        - heroku apps | grep ^${HEROKU_API_NAME}$ || heroku apps:create ${HEROKU_API_NAME}
+        - docker tag frontend registry.heroku.com/${HEROKU_WEB_NAME}/web && docker push registry.heroku.com/${HEROKU_WEB_NAME}/web
+        - docker tag backend registry.heroku.com/${HEROKU_API_NAME}/web && docker push registry.heroku.com/${HEROKU_API_NAME}/web
+      deploy:
+        - provider: releases
+          api_key:
+            secure: "G5xbYPl7B35XmQ0CefNbVScqo+yGJcP1iN6aPJ3s1j2jFZdddpfxjQogE02wM8WmwrUTtchtUpAG9J2AWDz82TlL4DuIUeO8l74zkmiLos7PIpTo3kL6TMwxJCq1CInVWcTwlOBFFyIrM5QuRVfRQrOmkBnhTzZKwPiX6MkJTFwsYUVwGWnr6PsbYsUlz+IwIGv/NFscEKv+dB9tXkDHMpyhUgNJenxRbSv3qZaPlR1AYk1uk4VEHMT6mEcEGKptWRhSGg32ig6bNGFXfowpp+VikOyIagN+24M8mo25KLtInjqdGPnn36oGaDvPETMuILcodz0Enu6Jx5zFHlFBEWQebkhoV1aB1mTCj+0b5mbhFakV8c3uqMPGQFnKaaaByuf5ha3OVDoTUfDg0VoZW+vO7G9hvhXoMqJhgEsIh6jqperVlusF5ulDioJV3RzmeQ1uDtpAUnCellQoIvI6dnyiJS+Fh4YUaqVqgbghFlFfSxmS11gyL12FGAwEHsZ9hzicc3xP3p7n2D4uhk/1Rr27NM9P1L2cdcYnhFIjc4cleb1WuE7Llm9QIiImSR+6FItty9qKIPthzo3tDj5m3yPBWkgfnD48y6OnfBBD+nB3qe4CSx//dJhZAAod/fkBJqbXdHFKNW9B+FTbjBk25GJ9e+sJGACepBDJ438XJS0="
+          skip_cleanup: true
+          on:
+            # tags: true
+            branch: master
+        - provider: script
+          script: heroku config:set BACKEND_HOST=${BACKEND_HOST} BACKEND_PORT=${BACKEND_PORT} -a ${HEROKU_WEB_NAME} && heroku container:release web -a ${HEROKU_WEB_NAME} && heroku ps:scale web=1 -a ${HEROKU_WEB_NAME}
+        - provider: script
+          script: heroku config:set DB_URI="${DATABASE_URI}" -a ${HEROKU_API_NAME} && heroku container:release web -a ${HEROKU_API_NAME} && heroku ps:scale web=1 -a ${HEROKU_API_NAME}

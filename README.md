@@ -8,7 +8,6 @@
 * Instalar o **Git** para download do `codigo fonte`. [Clique aqui](https://git-scm.com/downloads)
 * Instalar o **Docker** para hospedar os `containers`. [Windows](https://docs.docker.com/docker-for-windows/install/) | [MacOS](https://docs.docker.com/docker-for-mac/install/) | [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 * Instalar o **Docker-Compose** para `build` e `init` das aplicacoes. [Clique aqui](https://docs.docker.com/compose/install/)
-* Instalar o **Newman** para executar os `tests` das aplicacoes. [Clique aqui](https://learning.getpostman.com/docs/postman/collection_runs/command_line_integration_with_newman/)
 
 
 ![stack](stack.png)

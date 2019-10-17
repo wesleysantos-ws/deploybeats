@@ -44,7 +44,7 @@ jobs:
         - heroku apps | grep ^${HEROKU_API_NAME}$ || heroku apps:create ${HEROKU_API_NAME}
         - docker tag frontend registry.heroku.com/${HEROKU_WEB_NAME}/web && docker push registry.heroku.com/${HEROKU_WEB_NAME}/web
         - docker tag backend registry.heroku.com/${HEROKU_API_NAME}/web && docker push registry.heroku.com/${HEROKU_API_NAME}/web
-#         - git tag ${VERSION}
+        - git tag -f ${VERSION}
       deploy:
         - provider: releases
           overwrite: true
@@ -54,7 +54,14 @@ jobs:
           skip_cleanup: true
           on:
             all_branches: true
+            tags: true
         - provider: script
           script: heroku config:set BACKEND_HOST=${BACKEND_HOST} BACKEND_PORT=${BACKEND_PORT} -a ${HEROKU_WEB_NAME} && heroku container:release web -a ${HEROKU_WEB_NAME} && heroku ps:scale web=1 -a ${HEROKU_WEB_NAME}
+          on:
+            all_branches: true
+            tags: true
         - provider: script
           script: heroku config:set DB_URI="${DATABASE_URI}" -a ${HEROKU_API_NAME} && heroku container:release web -a ${HEROKU_API_NAME} && heroku ps:scale web=1 -a ${HEROKU_API_NAME}
+          on:
+            all_branches: true
+            tags: true

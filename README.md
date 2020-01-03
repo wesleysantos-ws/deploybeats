@@ -1,7 +1,15 @@
+[![Build Status](https://travis-ci.org/wswesantos/deploybeats.svg?branch=master)](https://travis-ci.org/wswesantos/deploybeats)
+
 # Deploy Beats
-[![Build Status](https://travis-ci.com/weesntos/deploybeats.svg?branch=master)](https://travis-ci.com/weesntos/deploybeats)
+
+Ferramenta para registrar e acompanhar status de Deploy
 
 # Como usar
+
+**Demo**: https://deploybeats.herokuapp.com
+
+![stack](deploybeats.png)
+
 
 ## Pre-requisito
 

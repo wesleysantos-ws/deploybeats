@@ -7,7 +7,6 @@ env:
     - TRAVIS_TAG=${VERSION}
     - DOCKER_COMPOSE_VERSION=1.24.0
     # travis encrypt HEROKU_API_KEY=$(heroku auth:token) --pro
-    - secure: "q4VMmtCW8W2MTasuSTomS/105j7nUnZOIqDKwSlfpmbAyV4u8UI2dTFfahT9o2acDfXRKI1iWrZHcIQ9y55pAsJ9Rwe3iA/YL5TOnMWCpn32LZD+0J1aFne7lfpGDSncSpZkMQpaCuwSXZO/vHim4gOMOdjNc4a6ykVcnfzJePP8dJRwdDDmWJLEP7BzsgeN2mFUWnmwHhK7ZkGECe8nNI2uLB2VWcK1XQcUomDr3tI51YZEk4jWoQ7zxLXh+Fy8MVNHQPa9dvdYyFbKTweDuRlQEIcoJuvucShmip4qrsqXU2QsJVGhmgyo/7GA/OUEW6wn4zKjQmwfpFm9vR6sS3EHgRGxOzwCnkF71jZ6K8Lc7iRKIU+V5OYv0VMZc8ue5HpR+VeOeFNeqW/mJpWMkcEuBL4pQ4Ot9d7wTSSzvzoU0Zhnfi2rCtQUhYV05cv8hXXDptFqh2IS0GBs3Qg7Lv0jBa6tehHflLZTnsw+kssMDrUpCKAJL50htmC+R+oUqkwJaTDOaIaWQzei/yiKFCWPESueXr+2o6g/iuLGitIFpiYLCVY8hs9B0jFGLOnMN7WYoxSSK7rsyUXliA/gksaajbKxqFSF5hCVku5KoRMdd0IZ/4Nlw6ycbID6nI+jC9XWwrX/39/WzjctGQiBBfXaTMK/Dkq77XLKvrK+fXM="
     - HEROKU_WEB_NAME=deploybeats
     - HEROKU_API_NAME=deploybeats-api
     - BACKEND_HOST=${HEROKU_API_NAME}.herokuapp.com
@@ -32,9 +31,6 @@ jobs:
     - stage: Deploy
       env:
         # travis encrypt $(heroku auth:token) --pro
-        DOCKER_PASSWORD:
-          secure: "VMebDT6tzuuLk8/Wv9UpR4MUk1UnPttc8GA5DAFiHdQqiKTa+9oOf+Bh2/ePRohLWCRUYZX2lDQQNFMbWWwBeoxEGXSjcRokZHUyxrVOFma+26TUpSG1YATG5gYlH8dr7Ur0njL729vJ22ip/jTSDct6OptDgO7hDG4j4ZAR5Pk98XLyCNJN0B8n6rEa7nZEGdUOTMB79XuaWaJKMG2egP4oNPs//oK0hOHgF4+7UhYRYHiLGL3lr1lFT6hJTZ7b+Q37djEA2EJxD1yLnIOhWIyabzt3vGLwx942vOEYyRmk5qrvoF5JjI1BNoJxrLR6w0/ILiMJEuBCEDLJu/jZhOZglDYPpSwJAJUA49n5dODNwT1HXLRPvsNnFZc/RbknvbToaeMUT03/Wx0Pnj2PW0RIDC74sKf+SCa5JHhxlK7LJouywhZcl0FEZZpLJBlGGnKkdYgsbOFddrWK/giWKvUc2kuv+RXO55FfYC9GjYMlYgq4lMiXuZyF9b1xNBzaMLMnlVwdXgqhJXa8kZwB3tPdzXi0JNHTqUTUDQiv4Y3SoiCi+n3r660Oz14BdlXdVbXOCKIDSGlCcCCV2JIsbuOYMPhlqSLFXp2JZgLSmvjP868ybGqXyFv3Inmi0SCPOvIT4qII5OfHdBPmur7ftZJmspvzyyUufHDsyh9pEiY="
-        # travis encrypt 'mongodb://mongodb0.example.com:27017/admin' --pro
         DATABASE_URI:
           secure: "rSF3I1iAE4Duzlc1xIqHZh9UGHqEQudKr5vQ4hplrDsxExfjU46grPu125kZ2sijqIYGsIczK6IxzztD1xRH6FILulv3pxqhYx8PPftg2y0xBNzRR/qCswDTBxxBDA+uwHMCXqqqIPFT7DQnTE6HIGiq+NIey1sQ8NjRHnB5erEnlILKh+aBENDHb3Dxv4HuM2URAKtUUbfqkHa9j9h7u5mFyuIftE5kvCCtC/GA7vRwE0ZkfDqszVCx5BNIYQgukk9AmbqZhDir9sytHKVojWWhScy1EOwyDvl8hx8JD3Ws5BVHJ8zQMi/R0wdyclSId9GispmNclGMoibe3ROHorTg7DiCfLvt6D7bjud/nXdQTp/CeugRlI7djbrKFXxfl825WfiVsgzbtziMcYuj/lxNQvwGdFCYuCW066bDMO2XPq4tI6ww+VUn88yLuPQY46C7Xm321Sl/VEdNOqGikdD8GFo0EP40CqbDjODOdndGU9EavKg/v5ELkCJ76h3QQjoDddu5+H9hkaVl5nlLbDxDxe30yVpsP1QjH5Bcp0VPhvo29CAhnQPGr7BvDQ8wnZh6VJE7Nmsv3f52uCdqXF0DYXuozjrgYHodyTv+20tlvgu0yNEXtJR6B7TSbhOxq5pFoGC9SSlvuc1n7j1r3ID/UJb2JYutnm+7yAhJGAI="
       script:
@@ -46,15 +42,6 @@ jobs:
         - docker tag backend registry.heroku.com/${HEROKU_API_NAME}/web && docker push registry.heroku.com/${HEROKU_API_NAME}/web
         - git tag -f ${VERSION}
       deploy:
-        - provider: releases
-          overwrite: true
-          # GitHub Release travis encrypt --pro 'api-key'
-          api_key:
-            secure: "iPKX91Q5lA4WJyaaygQrmVdo6BNwcce6aLvRCCt6JDhND/9p074H+UGTlvDbcjiaEGZaZNy9a6/W+6DJzDGbiHA2N3K5hZTMS/QNFO4p2u1vEIK/MTPOSXWOJl3x5icq1BN0UGBd8FkKcwSYmINyQzDa0L9c9V1feu1S6rurB5khzLYnb9JnGzVI+gXhGL2URXmORreGgge6fFjvgdyq+IOnK6PhZAVdt8WyS7McGfhsnPqnvuanj5mAZgdEya+BdJc1TCnLuROLXF/CYRYdt0mSLvRNRywBJ3H6oe/uQtvJo9aSLjFeSMRQpxtNa1APlXkgx3qIoyIlvFNAyoZ8Nvk5xwRBl5voP9X6FjqXJZ4IW6PARGooyIuJfAs5XhebAet13X45e6GFTGd7j9GoDHeLjpr0YOb9i5eu9n1yeMv8uyZY9I96mMRhZAEFGbvcySO5+HtQHL3JouqhvXqsQEMcRdmhPLIe1WPZ7yzO9NIvxXBw+jf635dSelYL5elVFzNlqS0NsTelPfpwRrDcz04fFdyL1OCZeMHbSIG2cbiGd+vvqoPgGcImOzg2M5iP6D8/gSxr1uyGeADgB8uq+nH5JeS13LyaYnBtIbEFrqUel3UXxHjnCUkOkfwXwxupgB+J07k6kyXgy9Y6YVvNN18Ogf/dUWBTM0KJuJADMcY="
-          skip_cleanup: true
-          on:
-            all_branches: true
-            tags: true
         - provider: script
           script: heroku config:set BACKEND_HOST=${BACKEND_HOST} BACKEND_PORT=${BACKEND_PORT} -a ${HEROKU_WEB_NAME} && heroku container:release web -a ${HEROKU_WEB_NAME} && heroku ps:scale web=1 -a ${HEROKU_WEB_NAME}
           on:
